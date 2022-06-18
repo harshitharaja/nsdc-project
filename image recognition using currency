@@ -1,0 +1,459 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[9]:
+
+
+from matplotlib.image import imread
+china = imread("currency/china/1.jpg")
+print(type(china))
+
+
+# In[13]:
+
+
+china
+
+
+# In[4]:
+
+
+china.size
+
+
+# In[5]:
+
+
+china.shape
+
+
+# In[6]:
+
+
+china.ndim
+
+
+# In[10]:
+
+
+indonesia = imread("currency/indonesia/10.jpg")
+print(type(indonesia))
+
+
+# In[11]:
+
+
+indonesia
+
+
+# In[9]:
+
+
+indonesia.size,indonesia.shape,indonesia.ndim
+
+
+# In[10]:
+
+
+norway = imread("currency/norway/13.jpg")
+print(type(norway))
+
+
+# In[11]:
+
+
+norway
+
+
+# In[12]:
+
+
+norway.size,norway.shape,norway.ndim
+
+
+# In[13]:
+
+
+china[:100]
+
+
+# In[14]:
+
+
+indonesia[:1]
+
+
+# In[15]:
+
+
+norway[:10]
+
+
+# In[16]:
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[17]:
+
+
+china = plt.imread('currency/china/1.jpg')
+
+
+# In[18]:
+
+
+plt.imshow(china)
+
+
+# In[19]:
+
+
+greyImg = china.mean(axis=2,keepdims=True)/255.0
+greyImg = np.concatenate([greyImg]*3,axis=2)
+
+
+# In[20]:
+
+
+plt.imshow(greyImg)
+
+
+# In[21]:
+
+
+vertical_filter = [[-1,-2,-1],[0,0,0],[1,2,1]]
+
+
+# In[22]:
+
+
+horizontal_filter = [[-1,0,1],[-2,0,2],[-1,0,1]]
+
+
+# In[23]:
+
+
+n,m,d = china.shape
+
+
+# In[24]:
+
+
+vertical_edges_china = np.zeros_like(china)
+
+
+# In[25]:
+
+
+for row in range(3,n-2):
+    for col in range(3,m-2):
+        local_pixels = china[row-1:row+2, col-1:col+2,0]
+        transformed_pixels = vertical_filter*local_pixels
+        vertical_score = (transformed_pixels.sum()+4)/8
+        vertical_edges_china[row,col] = [vertical_score]*3
+
+
+# In[26]:
+
+
+plt.imshow(vertical_edges_china)
+
+
+# In[27]:
+
+
+horizontal_edges_china = np.zeros_like(china)
+
+
+# In[28]:
+
+
+for row in range(3,n-2):
+    for col in range(3,m-2):
+        local_pixels = china[row-1:row+2, col-1:col+2, 0]
+        transformed_pixels = horizontal_filter*local_pixels
+        horizontal_score = (transformed_pixels.sum() +4)/8
+        horizontal_edges_china[row,col] = [horizontal_score]*3
+
+
+# In[29]:
+
+
+horizontal_edges_china[170,224]
+
+
+# In[30]:
+
+
+plt.imshow(horizontal_edges_china)
+
+
+# In[31]:
+
+
+edges_china = np.zeros_like(china)
+
+
+# In[32]:
+
+
+for row in range(3,n-2):
+    for col in range(3,m-2):
+        local_pixels = china[row-1:row+2, col-1:col+2, 0]
+        
+        vertical_transformed_pixels = vertical_filter*local_pixels
+        vertical_score = vertical_transformed_pixels.sum()/4
+        
+        horizontal_transformed_pixels = horizontal_filter*local_pixels
+        horizontal_score = horizontal_transformed_pixels.sum()/4
+        
+        edges_score = (vertical_score**2 + horizontal_score**2)**.5
+        edges_china[row,col] = [edges_score]*3
+edges_china = edges_china/edges_china.max()
+
+
+# In[33]:
+
+
+plt.imshow(edges_china)
+
+
+# In[34]:
+
+
+random_china=np.random.random([500,500])
+
+
+# In[35]:
+
+
+random_china
+
+
+# In[36]:
+
+
+plt.imshow(random_china,"copper")
+
+
+# In[37]:
+
+
+from skimage import data
+
+
+# In[38]:
+
+
+
+plt.imshow(china)
+
+
+# In[39]:
+
+
+china.shape
+
+
+# In[40]:
+
+
+china[0:100,0:100,:]=[255,0,0]
+china[125:250,150:250,:]=[255,255,0]
+china[425:500,425:500,:]=[0,255,255]
+
+
+# In[41]:
+
+
+plt.imshow(china)
+
+
+# In[42]:
+
+
+from skimage.color import rgb2gray
+
+
+# In[3]:
+
+
+from skimage.transform import resize
+
+
+# In[4]:
+
+
+from skimage.io import imread,imshow
+
+
+# In[45]:
+
+
+china_gray=rgb2gray(china)
+
+
+# In[46]:
+
+
+imshow(china_gray)
+
+
+# In[47]:
+
+
+china.shape
+
+
+# In[48]:
+
+
+china_resize=resize(china,(500,500))
+
+
+# In[49]:
+
+
+imshow(china_resize)
+
+
+# In[50]:
+
+
+china_resize.shape
+
+
+# In[51]:
+
+
+import skimage.filters as filters
+
+
+# In[52]:
+
+
+imshow(china)
+
+
+# In[53]:
+
+
+china_sobel=filters.frangi(china)
+
+
+# In[54]:
+
+
+imshow(china_sobel)
+
+
+# In[55]:
+
+
+china_sobel=filters.laplace(china)
+
+
+# In[56]:
+
+
+imshow(china_sobel)
+
+
+# In[3]:
+
+
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+
+# In[4]:
+
+
+import pandas as pd
+
+
+# In[29]:
+
+
+china_2d_new=pd.DataFrame(china_rsize_2d)
+
+
+# In[15]:
+
+
+china.shape
+
+
+# In[8]:
+
+
+china_sz = resize(china,(505,500))
+
+
+# In[7]:
+
+
+china_rsize = resize(china,(500,500))
+
+
+# In[18]:
+
+
+china_sz.shape
+
+
+# In[19]:
+
+
+china_sz
+
+
+# In[23]:
+
+
+china_rsize.shape
+
+
+# In[24]:
+
+
+china.shape
+
+
+# In[25]:
+
+
+china_2d = china.reshape(2220,3961*3)
+
+
+# In[26]:
+
+
+china_2d
+
+
+# In[27]:
+
+
+china_rsize_2d = china_rsize.reshape(500,500*3)
+
+
+# In[28]:
+
+
+china_rsize_2d
+
+
+# In[30]:
+
+
+china_2d_new
+
+
+# In[ ]:
+
+
+
