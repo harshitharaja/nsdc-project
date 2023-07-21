@@ -1,6 +1,6 @@
 # hashh
 hey there!
-Iam hasrhitha
+Iam harshitha
 i have excecuted a easy code for image recognition of currency notes of few countries.
 life"s made easy with AI. 
 so lets explroe it.
